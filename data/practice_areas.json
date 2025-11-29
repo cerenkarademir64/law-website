@@ -1,0 +1,104 @@
+[
+  {
+    "id": 1,
+    "title": "İş Hukuku",
+    "slug": "is-hukuku",
+    "description": "İş hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. İşçi ve işveren haklarını koruyoruz.",
+    "icon": "briefcase",
+    "display_order": 1,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "title": "Aile ve Boşanma Hukuku",
+    "slug": "aile-ve-bosanma-hukuku",
+    "description": "Aile hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. Boşanma, velayet ve nafaka davalarında yanınızdayız.",
+    "icon": "home",
+    "display_order": 2,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "title": "Gayrimenkul Hukuku",
+    "slug": "gayrimenkul-hukuku",
+    "description": "Gayrimenkul hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. Tapu, kira ve inşaat hukuku konularında uzmanız.",
+    "icon": "building",
+    "display_order": 3,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "title": "Ceza Hukuku",
+    "slug": "ceza-hukuku",
+    "description": "Ceza hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. Suç mağdurları ve sanıklar için hukuki destek sağlıyoruz.",
+    "icon": "scale",
+    "display_order": 4,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "title": "Tazminat Hukuku",
+    "slug": "tazminat-hukuku",
+    "description": "Tazminat hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. Maddi ve manevi tazminat davalarında tecrübeliyiz.",
+    "icon": "file-text",
+    "display_order": 5,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "title": "Miras Hukuku",
+    "slug": "miras-hukuku",
+    "description": "Miras hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. Veraset, terekenin paylaşımı ve vasiyetname konularında hizmet veriyoruz.",
+    "icon": "users",
+    "display_order": 6,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "title": "Şirketler Hukuku",
+    "slug": "sirketler-hukuku",
+    "description": "Şirketler hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. Şirket kuruluşu, birleşme ve devir işlemlerinde yanınızdayız.",
+    "icon": "briefcase",
+    "display_order": 7,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "title": "İdare Hukuku",
+    "slug": "idare-hukuku",
+    "description": "İdare hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. İdari davalar ve kamu kurumlarıyla ilgili hukuki süreçlerde destek veriyoruz.",
+    "icon": "landmark",
+    "display_order": 8,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 9,
+    "title": "Yabancılar Hukuku",
+    "slug": "yabancilar-hukuku",
+    "description": "Yabancılar hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. Oturma izni, çalışma izni ve vatandaşlık başvurularında yardımcı oluyoruz.",
+    "icon": "globe",
+    "display_order": 9,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 10,
+    "title": "Tüketici Hukuku",
+    "slug": "tuketici-hukuku",
+    "description": "Tüketici hukuku hakkında detaylı bilgi ve danışmanlık almak için tıklayın. Ayıplı mal, hizmet ve tüketici hakları konularında uzmanız.",
+    "icon": "shopping-cart",
+    "display_order": 10,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  }
+]
+
+
