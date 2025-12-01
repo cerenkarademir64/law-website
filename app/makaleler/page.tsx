@@ -1,4 +1,4 @@
-import { Header } from "@/frontend/components/header"
+import { Header } from "@/components/header"
 import { Footer } from "@/frontend/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"

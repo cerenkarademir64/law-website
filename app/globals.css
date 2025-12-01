@@ -118,6 +118,10 @@
 }
 
 @layer base {
+  html {
+    /* Prevent layout shift when vertical scrollbar appears/disappears */
+    scrollbar-gutter: stable both-edges;
+  }
   * {
     @apply border-border outline-ring/50;
   }
