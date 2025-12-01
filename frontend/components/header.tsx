@@ -37,7 +37,7 @@ export function Header() {
             />
           </Link>
 
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-1 mr-[-40px]">
             <Link
               href="/"
               className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
@@ -65,23 +65,14 @@ export function Header() {
               Hakkımızda
             </Link>
             <Link
-              href="/av-kadir-tas"
+              href="/calisma-alanlari"
               className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
                 isActive("/av-kadir-tas")
                   ? "text-foreground bg-secondary/60"
                   : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
               }`}
             >
-              Av. Kadir Taş
-            </Link>
-            <Link
-              href="/calisma-alanlari"
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
-                isActive("/calisma-alanlari")
-                  ? "text-foreground bg-secondary/60"
-                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
-              }`}
-            >
+             
               Çalışma Alanları
             </Link>
             <Link
@@ -160,17 +151,7 @@ export function Header() {
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Av. Kadir Taş
-            </Link>
-            <Link
-              href="/calisma-alanlari"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all ${
-                isActive("/calisma-alanlari")
-                  ? "text-foreground bg-secondary/60"
-                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
+            
               Çalışma Alanları
             </Link>
             <Link

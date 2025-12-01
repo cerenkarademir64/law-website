@@ -1,5 +1,5 @@
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/frontend/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Briefcase, Scale, Users, Shield, FileText, Award, ArrowRight } from "lucide-react"
@@ -120,7 +120,7 @@ export default function CalismaAlanlariPage() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-24">
+      <section className="pt-32 pb-24 lg:pt-40 lg:pb-32">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="space-y-16">
             {practiceAreas.map((area, index) => (

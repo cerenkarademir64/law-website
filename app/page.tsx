@@ -1,8 +1,8 @@
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/frontend/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { ArrowRight, Scale, Briefcase, Users, Award, Shield, FileText, Calendar, User } from "lucide-react"
+import { ArrowRight, Scale, Briefcase, Users, Award, Shield, FileText } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { Suspense } from "react"
@@ -13,48 +13,66 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <section className="relative mt-20 min-h-[calc(100vh-80px)] pb-24 lg:pb-36 overflow-hidden">
-        <Image
-          src="/law-firm-hero-image.jpg"
-          alt="Taş Hukuk & Danışmanlık Hero"
-          fill
-          priority
-          className="object-cover object-center"
-        />
-        <div className="container mx-auto px-4 lg:px-8 relative">
-          <div className="max-w-4xl mx-auto text-center space-y-8 pt-10 lg:pt-16">
-            <div className="inline-block px-4 py-2 bg-accent/10 rounded-full border border-accent/20 mb-4 animate-fade-in-down">
-              <span className="text-sm font-medium text-white/90">Profesyonel Hukuki Danışmanlık</span>
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-semibold text-white text-balance leading-[1.05] tracking-tight animate-fade-in-up delay-100 drop-shadow-lg">
-              Haklarınızı En İyi Şekilde Korumanın Etkili Çözümler
-            </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-white/90 text-pretty leading-relaxed max-w-3xl mx-auto animate-fade-in-up delay-200 drop-shadow">
-              Yasal sorunlarınıza etkili ve hızlı Çözümler sunuyoruz.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-              <Button
-                asChild
-                size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 h-12 shadow-lg hover:shadow-xl transition-all animate-fade-in-up delay-300"
-              >
-                <Link href="/online-randevu">
-                  Hemen Randevu Alın
-                  <ArrowRight className="ml-2" size={20} />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="text-base px-8 h-12 border-2 hover:bg-secondary/50 bg-transparent"
-              >
-                <Link href="/calisma-alanlari">Çalışma Alanlarımız</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section className="relative mt-20 h-[calc(100vh-80px)] flex items-center justify-center pb-24 lg:pb-36 overflow-hidden">
+
+  {/* Arka plan görseli */}
+  <Image
+    src="/law-firm-hero-image.jpg"
+    alt="Taş Hukuk & Danışmanlık Hero"
+    fill
+    priority
+    className="object-cover object-center"
+  />
+
+  {/* Koyu overlay – yazıyı görünür yapan kısım */}
+  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/20" />
+
+  {/* İçerik */}
+  <div className="relative z-10 flex items-center justify-center h-full">
+    <div className="text-center max-w-4xl mx-auto px-4">
+      <div className="inline-block px-4 py-2 bg-white/10 rounded-full border border-white/30 mb-4 backdrop-blur-sm animate-fade-in-down">
+        <span className="text-sm font-medium text-white">
+          Profesyonel Hukuki Danışmanlık
+        </span>
+      </div>
+
+      <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-semibold text-white text-balance leading-[1.05] tracking-tight animate-fade-in-up delay-100 drop-shadow-2xl">
+        Haklarınızı En İyi Şekilde Korumanın Etkili Çözümler
+      </h1>
+
+      <p className="text-lg md:text-xl lg:text-2xl text-white/90 text-pretty leading-relaxed max-w-3xl mx-auto animate-fade-in-up delay-200 drop-shadow-md mt-4">
+        Yasal sorunlarınıza etkili ve hızlı çözümler sunuyoruz.
+      </p>
+
+      <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+        {/* Ana buton */}
+        <Button
+          asChild
+          size="lg"
+          className="bg-[#7A2420] text-white hover:bg-[#8A2B26] text-base px-8 h-12 shadow-lg hover:shadow-2xl transition-all animate-fade-in-up delay-300"
+        >
+          <Link href="/online-randevu">
+            Hemen Randevu Alın
+            <ArrowRight className="ml-2" size={20} />
+          </Link>
+        </Button>
+
+        {/* İkincil buton */}
+        <Button
+          asChild
+          size="lg"
+          variant="outline"
+          className="text-white border-white text-base px-8 h-12 border-2 bg-transparent hover:bg-white hover:text-black transition-all animate-fade-in-up delay-400"
+        >
+          <Link href="/calisma-alanlari">
+            Çalışma Alanlarımız
+          </Link>
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       <section className="py-16 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary opacity-90" />
@@ -354,8 +372,8 @@ async function LatestArticles() {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {articles.map((article) => (
-        <Card key={article.id} className="rounded-2xl border-2 border-border hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col overflow-hidden">
-          <div className="relative h-56 w-full overflow-hidden bg-secondary/20">
+        <Card key={article.id} className="border-2 border-border hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col overflow-hidden">
+          <div className="relative h-48 w-full overflow-hidden bg-secondary/20">
             <Image
               src={article.image_url || "/placeholder.jpg"}
               alt={article.title}
@@ -363,43 +381,27 @@ async function LatestArticles() {
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </div>
-          <CardContent className="p-8 flex flex-col flex-1">
-            <div className="mb-4">
+          <CardContent className="p-6 flex flex-col flex-1">
+            <div className="mb-3">
               {article.category && (
-                <span className="inline-block px-4 py-1.5 bg-accent/10 rounded-full border border-accent/20 text-xs font-semibold text-accent">
+                <span className="inline-block px-3 py-1 bg-accent/10 rounded-full border border-accent/20 text-xs font-medium text-accent">
                   {article.category}
                 </span>
               )}
             </div>
-            <h3 className="text-2xl md:text-3xl font-serif font-semibold leading-snug mb-4 group-hover:text-accent transition-colors">
+            <h3 className="text-xl font-serif font-semibold mb-3 group-hover:text-accent transition-colors">
               {article.title}
             </h3>
-            {article.excerpt && <p className="text-muted-foreground leading-relaxed mb-6">{article.excerpt}</p>}
-            <div className="flex items-center gap-6 text-sm text-muted-foreground mb-6">
-              <div className="flex items-center gap-2">
-                <User size={16} />
-                <span>{article.author || "—"}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar size={16} />
-                <span>
-                  {new Date(article.published_at || article.created_at).toLocaleDateString("tr-TR", {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </span>
-              </div>
-            </div>
-            <div className="mt-auto">
-              <Link
-                href={`/makaleler/${article.slug}`}
-                className="inline-flex items-center text-accent hover:text-accent/80 font-medium group-hover:gap-3 gap-2 transition-all"
-              >
-                Devamını Oku
-                <ArrowRight size={16} />
-              </Link>
-            </div>
+            {article.excerpt && (
+              <p className="text-muted-foreground leading-relaxed mb-4 line-clamp-3">{article.excerpt}</p>
+            )}
+            <Link
+              href={`/makaleler/${article.slug}`}
+              className="mt-auto inline-flex items-center text-accent hover:text-accent/80 font-medium group-hover:gap-3 gap-2 transition-all"
+            >
+              Devamını Oku
+              <ArrowRight size={16} />
+            </Link>
           </CardContent>
         </Card>
       ))}

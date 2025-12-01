@@ -1,5 +1,5 @@
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/frontend/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
@@ -29,9 +29,9 @@ export default async function ArticlesPage() {
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 bg-gradient-to-b from-background to-secondary/30">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-5xl md:text-6xl font-serif font-light text-balance leading-tight">Hukuki İçerikler</h1>
+            <h1 className="text-5xl md:text-6xl font-serif font-light text-balance leading-tight">Legal Insights</h1>
             <p className="text-xl text-muted-foreground text-pretty leading-relaxed">
-              Deneyimli avukatlarımızdan analizler, güncel gelişmeler ve pratik rehberler.
+              Expert analysis, industry updates, and practical guidance from our experienced attorneys.
             </p>
           </div>
         </div>
@@ -42,7 +42,7 @@ export default async function ArticlesPage() {
         <div className="container mx-auto px-4 lg:px-8">
           {articles.length === 0 ? (
             <div className="max-w-2xl mx-auto text-center space-y-4">
-              <p className="text-lg text-muted-foreground">Henüz yayımlanmış makale yok. Yakında tekrar kontrol edin.</p>
+              <p className="text-lg text-muted-foreground">No articles published yet. Check back soon!</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -56,7 +56,7 @@ export default async function ArticlesPage() {
                       </div>
                       <div className="flex items-center gap-1.5">
                         <Clock size={16} />
-                        <span>{article.read_time} dk okuma</span>
+                        <span>{article.read_time} min read</span>
                       </div>
                     </div>
 
@@ -73,7 +73,7 @@ export default async function ArticlesPage() {
                         href={`/articles/${article.slug}`}
                         className="inline-flex items-center text-accent hover:text-accent/80 font-medium"
                       >
-                        Yazıyı Oku
+                        Read article
                         <ArrowRight className="ml-2" size={16} />
                       </Link>
                     </div>

@@ -1,5 +1,5 @@
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Footer } from "@/frontend/components/footer"
 import { AppointmentForm } from "@/components/appointment-form"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle } from "lucide-react"

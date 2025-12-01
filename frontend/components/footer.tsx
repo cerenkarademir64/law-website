@@ -123,14 +123,7 @@ export function Footer() {
                   href="/av-kadir-tas"
                   className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
                 >
-                  Av. Kadir Taş
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/makaleler"
-                  className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                >
+                 
                   Makaleler
                 </Link>
               </li>
