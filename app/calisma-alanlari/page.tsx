@@ -103,54 +103,59 @@ export default function CalismaAlanlariPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <section className="relative pt-32 pb-16 lg:pt-40 lg:pb-24 bg-gradient-to-br from-background via-secondary/20 to-background">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <div className="inline-block px-4 py-2 bg-accent/10 rounded-full border border-accent/20 mb-4 animate-fade-in-down">
-              <span className="text-sm font-medium text-accent">Uzmanlık Alanlarımız</span>
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-light text-balance leading-tight animate-fade-in-up delay-100">
-              Çalışma Alanlarımız
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground text-pretty leading-relaxed max-w-3xl mx-auto animate-fade-in-up delay-200">
-              Geniş yelpazede hukuki danışmanlık ve dava takibi hizmetleri sunarak, müvekkillerimizin haklarını en iyi
-              şekilde koruyoruz.
-            </p>
-          </div>
+      {/* HERO — Hakkımızda ile birebir uyumlu */}
+      <section
+        className="relative h-[75vh] flex items-center justify-center text-center text-white"
+        style={{
+          backgroundImage: "url('/calisma-alanlari-hero.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/45"></div>
+
+        <div className="relative z-10 max-w-3xl mx-auto space-y-6">
+          <span className="px-4 py-2 bg-white/20 text-white font-medium text-sm rounded-full border border-white/30">
+            Uzmanlık Alanlarımız
+          </span>
+
+          <h1 className="text-6xl font-serif font-light drop-shadow-lg">Çalışma Alanlarımız</h1>
+
+          <p className="text-xl text-white/95 drop-shadow-md">
+            Müvekkillerimizin haklarını korumak için geniş yelpazede hukuki danışmanlık hizmeti sunuyoruz.
+          </p>
         </div>
       </section>
 
-      <section className="pt-32 pb-24 lg:pt-40 lg:pb-32">
+
+      {/* KARTLAR — Resme gömülü düzgün geçiş */}
+      <section className="relative -mt-32 pb-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="space-y-16">
             {practiceAreas.map((area, index) => (
               <Card
                 key={area.slug}
-                className="border-2 border-border hover:border-accent/50 hover:shadow-xl transition-all duration-300 animate-fade-in-up"
-                style={{ animationDelay: `${index * 100 + 100}ms` }}
+                className="border-2 border-border bg-white shadow-xl hover:shadow-2xl transition-all"
+                style={{ animationDelay: `${index * 120}ms` }}
               >
-                <CardContent className="p-8 lg:p-12">
-                  <div className="grid lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-1 space-y-6">
-                      <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center border-2 border-accent/20">
+                <CardContent className="p-10">
+                  <div className="grid lg:grid-cols-3 gap-10">
+                    
+                    <div className="space-y-6">
+                      <div className="w-16 h-16 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
                         <area.icon className="text-accent" size={32} />
                       </div>
-                      <div>
-                        <h2 className="text-3xl font-serif font-semibold mb-3">{area.title}</h2>
-                        <p className="text-muted-foreground leading-relaxed">{area.description}</p>
-                      </div>
+                      <h2 className="text-3xl font-serif font-semibold">{area.title}</h2>
+                      <p className="text-muted-foreground leading-relaxed">{area.description}</p>
                     </div>
 
                     <div className="lg:col-span-2">
-                      <h3 className="text-xl font-semibold mb-6 text-foreground/90">Sunduğumuz Hizmetler</h3>
+                      <h3 className="text-xl font-semibold mb-6">Sunduğumuz Hizmetler</h3>
                       <div className="grid sm:grid-cols-2 gap-4">
-                        {area.services.map((service, idx) => (
-                          <div
-                            key={idx}
-                            className="flex items-start gap-3 p-4 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-all duration-300 hover:-translate-y-0.5"
-                          >
-                            <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
-                            <span className="text-sm font-medium text-foreground/80">{service}</span>
+                        {area.services.map((service, i) => (
+                          <div key={i} className="flex items-start gap-3 p-4 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition">
+                            <span className="w-2 h-2 rounded-full bg-accent mt-2"></span>
+                            <span className="text-sm font-medium">{service}</span>
                           </div>
                         ))}
                       </div>
@@ -163,32 +168,22 @@ export default function CalismaAlanlariPage() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-24 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h2 className="text-4xl md:text-5xl font-serif font-light text-balance">
-              Hukuki Danışmanlığa İhtiyacınız mı Var?
-            </h2>
-            <p className="text-xl text-primary-foreground/90 text-pretty leading-relaxed">
-              Uzman avukatlarımızla hemen iletişime geçin. Size özel çözümler üretelim.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Button asChild size="lg" variant="secondary">
-                <Link href="/online-randevu">
-                  Online Randevu Al
-                  <ArrowRight className="ml-2" size={20} />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary bg-transparent"
-              >
-                <Link href="/iletisim">Bize Ulaşın</Link>
-              </Button>
-            </div>
-          </div>
+
+      <section className="py-20 bg-primary text-primary-foreground text-center">
+        <h2 className="text-4xl font-serif font-light">Hukuki Danışmanlığa İhtiyacınız mı Var?</h2>
+        <p className="text-lg max-w-xl mx-auto mt-4 text-primary-foreground/90">
+          Uzman avukatlarımızla hemen iletişime geçin. Size özel çözümler üretelim.
+        </p>
+
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <Button asChild size="lg" variant="secondary">
+            <Link href="/online-randevu">
+              Online Randevu Al <ArrowRight size={18} className="ml-2"/>
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="border-2">
+            <Link href="/iletisim">Bize Ulaşın</Link>
+          </Button>
         </div>
       </section>
 
