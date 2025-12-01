@@ -182,11 +182,6 @@ export function Header() {
                   Online Randevu
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="w-full mt-2" >
-                <Link href="/admin/login" onClick={() => setMobileMenuOpen(false)} title="Avukat girişi" aria-label="Avukat girişi">
-                  Avukat girişi
-                </Link>
-              </Button>
             </div>
           </div>
         )}
