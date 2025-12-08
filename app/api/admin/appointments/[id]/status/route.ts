@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server"
-import { updateAppointmentStatus } from "@/lib/db/queries"
+import { updateAppointmentStatus, getAppointmentById } from "@/lib/db/queries"
+import { sendAppointmentStatusEmail } from "@/lib/email"
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
-    // Support both JSON and form submissions
+    // JSON ve form gönderimlerini destekle
     let status: string | null = null
     const contentType = request.headers.get("content-type") || ""
     if (contentType.includes("application/json")) {
@@ -18,14 +22,28 @@ export async function POST(request: Request, { params }: { params: { id: string 
       return NextResponse.json({ error: "status is required" }, { status: 400 })
     }
 
-    const id = Number(params.id)
+    const { id: idParam } = await params
+    const id = Number(idParam)
     if (!Number.isFinite(id)) {
       return NextResponse.json({ error: "invalid id" }, { status: 400 })
     }
 
     await updateAppointmentStatus(id, status)
 
-    // On success, redirect back if the request was a form post
+    // E-posta bildirimi (sadece onaylandığında)
+    if (status === "confirmed") {
+      const appt = await getAppointmentById(id).catch(() => null)
+      if (appt?.email) {
+        await sendAppointmentStatusEmail({
+          to: appt.email,
+          name: appt.name,
+          status: "confirmed",
+          preferredDatetime: appt.preferred_datetime || undefined,
+        })
+      }
+    }
+
+    // Form post ise referer'a yönlendir, değilse JSON döndür
     const referer = request.headers.get("referer")
     if (!contentType.includes("application/json") && referer) {
       return NextResponse.redirect(referer)

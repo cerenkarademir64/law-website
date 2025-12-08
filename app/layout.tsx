@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Playfair_Display, Lora } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 
 const playfair = Playfair_Display({
@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: {
     default: "Taş Hukuk & Danışmanlık",
     template: "%s | Taş Hukuk",
+  },
+  icons: {
+    icon: "/favicon.png",
   },
   description:
     "İş, ceza, gayrimenkul, miras ve ticaret hukuku alanlarında uzman avukatlık ve danışmanlık hizmetleri.",
@@ -58,7 +61,7 @@ export default function RootLayout({
     <html lang="tr">
       <body className={`${lora.variable} ${playfair.variable} font-sans antialiased`}>
         {children}
-        <Analytics />
+        {process.env.NODE_ENV === "production" ? <Analytics /> : null}
       </body>
     </html>
   )

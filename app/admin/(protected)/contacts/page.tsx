@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Mail, Phone } from "lucide-react"
+import { Mail, Phone, Trash } from "lucide-react"
 import { getContactMessages as getContacts } from "@/lib/db/queries"
 
 export default async function AdminContactsPage() {
@@ -30,19 +30,30 @@ export default async function AdminContactsPage() {
                     <div className="space-y-1">
                       <h3 className="text-xl font-semibold">{contact.name}</h3>
                       <p className="text-sm text-muted-foreground">{contact.subject}</p>
-                      <Badge variant={contact.status === "unread" ? "default" : "secondary"}>{contact.status}</Badge>
+                      <Badge variant={contact.status === "unread" ? "default" : contact.status === "read" ? "secondary" : "outline"}>
+                        {contact.status === "unread" ? "Okunmadı" : contact.status === "read" ? "Okundu" : "Arşivlendi"}
+                      </Badge>
                     </div>
-                    <div className="flex gap-2">
-                      <form action={`/api/admin/contacts/${contact.id}/status`} method="POST">
-                        <input type="hidden" name="status" value="read" />
-                        <Button type="submit" variant="outline" size="sm">
-                          Okundu İşaretle
-                        </Button>
-                      </form>
-                      <form action={`/api/admin/contacts/${contact.id}/status`} method="POST">
-                        <input type="hidden" name="status" value="archived" />
-                        <Button type="submit" variant="outline" size="sm">
-                          Arşivle
+                    <div className="flex gap-2 items-center">
+                      {contact.status !== "read" && (
+                        <form action={`/api/admin/contacts/${contact.id}/status`} method="POST">
+                          <input type="hidden" name="status" value="read" />
+                          <Button type="submit" variant="outline" size="sm">
+                            Okundu İşaretle
+                          </Button>
+                        </form>
+                      )}
+                      {contact.status !== "archived" && (
+                        <form action={`/api/admin/contacts/${contact.id}/status`} method="POST">
+                          <input type="hidden" name="status" value="archived" />
+                          <Button type="submit" variant="outline" size="sm">
+                            Arşivle
+                          </Button>
+                        </form>
+                      )}
+                      <form action={`/api/admin/contacts/${contact.id}/delete`} method="POST">
+                        <Button type="submit" variant="ghost" size="icon" title="Sil" aria-label="Sil">
+                          <Trash size={16} />
                         </Button>
                       </form>
                     </div>

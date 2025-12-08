@@ -1,30 +1,7 @@
 export function validateArticleData(data: any) {
-  const errors: string[] = []
-
-  if (!data.title || data.title.trim().length < 5) {
-    errors.push("Başlık en az 5 karakter olmalıdır")
-  }
-
-  if (!data.slug || data.slug.trim().length < 3) {
-    errors.push("Slug en az 3 karakter olmalıdır")
-  }
-
-  if (!data.excerpt || data.excerpt.trim().length < 20) {
-    errors.push("Özet en az 20 karakter olmalıdır")
-  }
-
-  if (!data.content || data.content.trim().length < 50) {
-    errors.push("İçerik en az 50 karakter olmalıdır")
-  }
-
-  if (!data.author || data.author.trim().length < 2) {
-    errors.push("Yazar adı en az 2 karakter olmalıdır")
-  }
-
-  return {
-    isValid: errors.length === 0,
-    errors,
-  }
+  // İsteğiniz doğrultusunda sunucu tarafı uzunluk kısıtları kaldırıldı.
+  // Yalnızca genel geçer doğrulama istemiyorsanız her zaman geçerli döndürürüz.
+  return { isValid: true, errors: [] as string[] }
 }
 
 export function generateSlug(title: string): string {

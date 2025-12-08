@@ -6,6 +6,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
 
+    // Combine date and time (if provided) into ISO string for consistent storage
+    let preferred_date: string | undefined = body.preferred_date
+    if (body.preferred_date && body.preferred_time) {
+      const combined = new Date(`${body.preferred_date}T${body.preferred_time}`)
+      if (!isNaN(combined.getTime())) {
+        preferred_date = combined.toISOString()
+      }
+    }
+
     const validation = validateAppointmentData(body)
     if (!validation.isValid) {
       return NextResponse.json(
@@ -24,7 +33,7 @@ export async function POST(request: Request) {
       practice_area: body.practice_area,
       subject: body.subject,
       message: body.message,
-      preferred_date: body.preferred_date,
+      preferred_date,
     })
 
     return NextResponse.json(

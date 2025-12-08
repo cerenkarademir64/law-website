@@ -13,21 +13,44 @@ import { useToast } from "@/hooks/use-toast"
 export function AppointmentForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [practiceArea, setPracticeArea] = useState("")
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [flashState, setFlashState] = useState<"none" | "sent">("none")
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const { toast } = useToast()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setIsSubmitting(true)
+    setSuccessMessage(null)
+    setErrorMessage(null)
 
     const formData = new FormData(e.currentTarget)
     const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
       practice_area: practiceArea,
-      preferred_date: formData.get("preferred_date"),
-      preferred_time: formData.get("preferred_time"),
-      message: formData.get("message"),
+      subject: String(formData.get("subject") || "").trim(),
+      preferred_date: String(formData.get("preferred_date") || "").trim(),
+      preferred_time: String(formData.get("preferred_time") || "").trim(),
+      message: String(formData.get("message") || "").trim(),
+    }
+
+    // Basit istemci doğrulaması (zorunlu alanlar)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const invalid =
+      data.name.length < 2 ||
+      !emailRegex.test(data.email) ||
+      data.phone.length < 10 ||
+      !data.practice_area ||
+      data.subject.length < 5 ||
+      !data.preferred_date ||
+      !data.preferred_time ||
+    data.message.length === 0
+    if (invalid) {
+      setErrorMessage("Önce zorunlu alanları doldurunuz.")
+      setIsSubmitting(false)
+      return
     }
 
     try {
@@ -40,9 +63,12 @@ export function AppointmentForm() {
       if (!response.ok) throw new Error("Failed to submit")
 
       toast({
-        title: "Appointment requested!",
-        description: "We'll contact you shortly to confirm your consultation.",
+        title: "Randevu talebiniz alındı",
+        description: "En kısa sürede sizinle iletişime geçeceğiz.",
       })
+      setSuccessMessage("Randevu talebiniz başarıyla gönderildi.")
+      setFlashState("sent")
+      setTimeout(() => setFlashState("none"), 1200)
 
       e.currentTarget.reset()
       setPracticeArea("")
@@ -59,6 +85,16 @@ export function AppointmentForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {errorMessage && (
+        <div className="rounded-md border border-red-200 bg-red-50 text-red-700 p-4">
+          {errorMessage}
+        </div>
+      )}
+      {successMessage && (
+        <div className="rounded-md border border-green-200 bg-green-50 text-green-700 p-4">
+          {successMessage}
+        </div>
+      )}
       <div className="space-y-2">
         <Label htmlFor="name">Full Name *</Label>
         <Input id="name" name="name" required placeholder="John Doe" />
@@ -92,6 +128,11 @@ export function AppointmentForm() {
         </Select>
       </div>
 
+      <div className="space-y-2">
+        <Label htmlFor="subject">Subject *</Label>
+        <Input id="subject" name="subject" required placeholder="Brief subject (min 5 characters)" />
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="preferred_date">Preferred Date *</Label>
@@ -117,7 +158,7 @@ export function AppointmentForm() {
       </div>
 
       <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
-        {isSubmitting ? "Submitting..." : "Request Consultation"}
+        {isSubmitting ? "Gönderiliyor..." : flashState === "sent" ? "Randevu talebi gönderildi" : "Request Consultation"}
       </Button>
     </form>
   )

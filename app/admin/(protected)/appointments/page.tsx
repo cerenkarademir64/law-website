@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, Mail, Phone } from "lucide-react"
+import { Calendar, Clock, Mail, Phone, Trash } from "lucide-react"
 import { getAppointments } from "@/lib/db/queries"
 
 export default async function AdminAppointmentsPage() {
@@ -39,27 +39,60 @@ export default async function AdminAppointmentsPage() {
                                 : "outline"
                           }
                         >
-                          {appointment.status}
+                          {appointment.status === "pending"
+                            ? "Beklemede"
+                            : appointment.status === "confirmed"
+                              ? "Onaylandı"
+                              : "Reddedildi"}
                         </Badge>
                         <span className="text-sm text-muted-foreground px-2 py-1 bg-accent/10 text-accent rounded uppercase">
                           {appointment.practice_area.replace("-", " ")}
                         </span>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <form action={`/api/admin/appointments/${appointment.id}/status`} method="POST">
-                        <input type="hidden" name="status" value="confirmed" />
-                        <Button type="submit" variant="outline" size="sm">
-                          Onayla
-                        </Button>
-                      </form>
-                      <form action={`/api/admin/appointments/${appointment.id}/status`} method="POST">
-                        <input type="hidden" name="status" value="declined" />
-                        <Button type="submit" variant="outline" size="sm">
-                          Reddet
-                        </Button>
-                      </form>
-                    </div>
+                    {appointment.status === "pending" ? (
+                      <div className="flex gap-2 items-center">
+                        <form action={`/api/admin/appointments/${appointment.id}/status`} method="POST">
+                          <input type="hidden" name="status" value="confirmed" />
+                          <Button type="submit" variant="outline" size="sm">
+                            Onayla
+                          </Button>
+                        </form>
+                        <form action={`/api/admin/appointments/${appointment.id}/status`} method="POST">
+                          <input type="hidden" name="status" value="declined" />
+                          <Button type="submit" variant="outline" size="sm">
+                            Reddet
+                          </Button>
+                        </form>
+                        <form action={`/api/admin/appointments/${appointment.id}/delete`} method="POST">
+                          <Button type="submit" variant="ghost" size="icon" title="Sil" aria-label="Sil">
+                            <Trash size={16} />
+                          </Button>
+                        </form>
+                      </div>
+                    ) : appointment.status === "confirmed" ? (
+                      <div className="flex items-center gap-2">
+                        <div className="px-3 py-1 rounded bg-green-100 text-green-800 text-sm font-medium border border-green-200">
+                          Onaylandı
+                        </div>
+                        <form action={`/api/admin/appointments/${appointment.id}/delete`} method="POST">
+                          <Button type="submit" variant="ghost" size="icon" title="Sil" aria-label="Sil">
+                            <Trash size={16} />
+                          </Button>
+                        </form>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <div className="px-3 py-1 rounded bg-red-100 text-red-800 text-sm font-medium border border-red-200">
+                          Reddedildi
+                        </div>
+                        <form action={`/api/admin/appointments/${appointment.id}/delete`} method="POST">
+                          <Button type="submit" variant="ghost" size="icon" title="Sil" aria-label="Sil">
+                            <Trash size={16} />
+                          </Button>
+                        </form>
+                      </div>
+                    )}
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4 text-sm">

@@ -21,8 +21,9 @@ export function validateAppointmentData(data: any) {
     errors.push("Konu en az 5 karakter olmalıdır")
   }
 
-  if (!data.message || data.message.trim().length < 10) {
-    errors.push("Mesaj en az 10 karakter olmalıdır")
+  // Mesaj zorunlu, ancak minimum uzunluk kısıtı yok
+  if (!data.message || data.message.trim().length === 0) {
+    errors.push("Mesaj gereklidir")
   }
 
   return {

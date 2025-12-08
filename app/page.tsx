@@ -361,7 +361,9 @@ export default function HomePage() {
 
 async function LatestArticles() {
   const data = await getArticles()
-  const articles = (data || []).slice(0, 3)
+  const articles = (data || [])
+    .filter((a: any) => a.published !== false)
+    .slice(0, 3)
 
   if (!articles.length) {
     return (
@@ -371,40 +373,61 @@ async function LatestArticles() {
 
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {articles.map((article) => (
-        <Card key={article.id} className="border-2 border-border hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col overflow-hidden">
-          <div className="relative h-48 w-full overflow-hidden bg-secondary/20">
-            <Image
-              src={article.image_url || "/placeholder.jpg"}
-              alt={article.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-          </div>
-          <CardContent className="p-6 flex flex-col flex-1">
-            <div className="mb-3">
-              {article.category && (
-                <span className="inline-block px-3 py-1 bg-accent/10 rounded-full border border-accent/20 text-xs font-medium text-accent">
-                  {article.category}
-                </span>
-              )}
+      {articles.map((article: any) => {
+        const image = article.image_url || "/placeholder.svg"
+        const category = article.category || "Genel"
+        const author = article.author || "Taş Hukuk"
+        const dateSrc = article.published_at || article.created_at
+        const dateText = dateSrc ? new Date(dateSrc).toLocaleDateString("tr-TR") : ""
+        return (
+          <Card
+            key={article.id}
+            className="border-2 border-border hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col overflow-hidden"
+          >
+            <div className="relative h-56 w-full overflow-hidden bg-secondary/20">
+              <Image
+                src={image}
+                alt={article.title}
+                fill
+                className="object-contain transition-transform duration-300"
+              />
             </div>
-            <h3 className="text-xl font-serif font-semibold mb-3 group-hover:text-accent transition-colors">
-              {article.title}
-            </h3>
-            {article.excerpt && (
-              <p className="text-muted-foreground leading-relaxed mb-4 line-clamp-3">{article.excerpt}</p>
-            )}
-            <Link
-              href={`/makaleler/${article.slug}`}
-              className="mt-auto inline-flex items-center text-accent hover:text-accent/80 font-medium group-hover:gap-3 gap-2 transition-all"
-            >
-              Devamını Oku
-              <ArrowRight size={16} />
-            </Link>
-          </CardContent>
-        </Card>
-      ))}
+            <CardContent className="p-8 flex flex-col flex-1">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="px-3 py-1 bg-accent/10 rounded-full border border-accent/20">
+                  <span className="text-xs font-medium text-accent">{category}</span>
+                </div>
+              </div>
+              <h3 className="text-2xl font-serif font-semibold mb-4 group-hover:text-accent transition-colors break-words line-clamp-2">
+                {article.title}
+              </h3>
+              {article.excerpt && (
+                <p className="text-muted-foreground leading-relaxed mb-6 flex-1 break-words text-pretty line-clamp-3">
+                  {article.excerpt}
+                </p>
+              )}
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    {/* Using an inline user icon via Image would be overkill; keep simple text */}
+                    <span>{author}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span>{dateText}</span>
+                  </div>
+                </div>
+                <Link
+                  href={`/makaleler/${article.slug}`}
+                  className="inline-flex items-center text-accent hover:text-accent/80 font-medium group-hover:gap-3 gap-2 transition-all"
+                >
+                  Devamını Oku
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        )
+      })}
     </div>
   )
 }

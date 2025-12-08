@@ -76,6 +76,16 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   return (data as any) || null
 }
 
+export async function getArticleById(id: number): Promise<Article | null> {
+  const supabase = getAdminClient()
+  const { data, error } = await supabase.from("articles").select("*").eq("id", id).limit(1).maybeSingle()
+  if (error) {
+    console.error("Supabase getArticleById error:", error)
+    return null
+  }
+  return (data as any) || null
+}
+
 export async function createArticle(data: {
   title: string
   slug: string
@@ -84,6 +94,7 @@ export async function createArticle(data: {
   author: string
   image_url?: string
   category?: string
+  published?: boolean
 }): Promise<Article> {
   const supabase = getAdminClient()
   const now = new Date().toISOString()
@@ -95,12 +106,46 @@ export async function createArticle(data: {
     author: data.author,
     image_url: data.image_url || null,
     category: data.category || null,
-    published: true,
-    published_at: now,
+    published: data.published ?? true,
+    published_at: (data.published ?? true) ? now : null,
   }
   const { data: rows, error } = await supabase.from("articles").insert(payload).select("*").limit(1)
   if (error) {
     console.error("Supabase createArticle error:", error)
+    throw error
+  }
+  return rows?.[0] as any
+}
+
+export async function updateArticle(
+  id: number,
+  data: {
+    title?: string
+    slug?: string
+    excerpt?: string
+    content?: string
+    author?: string
+    image_url?: string | null
+    category?: string | null
+    published?: boolean
+    published_at?: string | null
+  },
+): Promise<Article> {
+  const supabase = getAdminClient()
+  const payload = {
+    ...(data.title !== undefined ? { title: data.title } : {}),
+    ...(data.slug !== undefined ? { slug: data.slug } : {}),
+    ...(data.excerpt !== undefined ? { excerpt: data.excerpt } : {}),
+    ...(data.content !== undefined ? { content: data.content } : {}),
+    ...(data.author !== undefined ? { author: data.author } : {}),
+    ...(data.image_url !== undefined ? { image_url: data.image_url } : {}),
+    ...(data.category !== undefined ? { category: data.category } : {}),
+    ...(data.published !== undefined ? { published: data.published } : {}),
+    ...(data.published_at !== undefined ? { published_at: data.published_at } : {}),
+  }
+  const { data: rows, error } = await supabase.from("articles").update(payload).eq("id", id).select("*").limit(1)
+  if (error) {
+    console.error("Supabase updateArticle error:", error)
     throw error
   }
   return rows?.[0] as any
@@ -167,6 +212,16 @@ export async function getAppointments(): Promise<Appointment[]> {
   return (data as any) || []
 }
 
+export async function getAppointmentById(id: number): Promise<Appointment | null> {
+  const supabase = getAdminClient()
+  const { data, error } = await supabase.from("appointments").select("*").eq("id", id).limit(1).maybeSingle()
+  if (error) {
+    console.error("Supabase getAppointmentById error:", error)
+    return null
+  }
+  return (data as any) || null
+}
+
 export async function getContactMessages(): Promise<ContactMessage[]> {
   const supabase = getAdminClient()
   const { data, error } = await supabase
@@ -219,6 +274,25 @@ export async function updateContactStatus(id: number, status: string): Promise<v
   const { error } = await supabase.from("contact_messages").update({ status }).eq("id", id)
   if (error) {
     console.error("Supabase updateContactStatus error:", error)
+    throw error
+  }
+}
+
+// Delete helpers
+export async function deleteAppointment(id: number): Promise<void> {
+  const supabase = getAdminClient()
+  const { error } = await supabase.from("appointments").delete().eq("id", id)
+  if (error) {
+    console.error("Supabase deleteAppointment error:", error)
+    throw error
+  }
+}
+
+export async function deleteContactMessage(id: number): Promise<void> {
+  const supabase = getAdminClient()
+  const { error } = await supabase.from("contact_messages").delete().eq("id", id)
+  if (error) {
+    console.error("Supabase deleteContactMessage error:", error)
     throw error
   }
 }

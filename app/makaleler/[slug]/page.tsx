@@ -464,8 +464,9 @@ const articles = [
   },
 ]
 
-export default function MakaleDetayPage({ params }: { params: { slug: string } }) {
-  const article = articles.find((a) => a.slug === params.slug)
+export default async function MakaleDetayPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const article = articles.find((a) => a.slug === slug)
 
   if (!article) {
     notFound()
@@ -495,7 +496,7 @@ export default function MakaleDetayPage({ params }: { params: { slug: string } }
                 </div>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light text-balance leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light text-balance leading-tight break-words">
                 {article.title}
               </h1>
 
@@ -541,7 +542,7 @@ export default function MakaleDetayPage({ params }: { params: { slug: string } }
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div
-              className="prose prose-lg max-w-none
+              className="prose prose-lg max-w-none break-words
                 prose-headings:font-serif prose-headings:font-light
                 prose-h2:text-4xl prose-h2:mt-12 prose-h2:mb-6
                 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4

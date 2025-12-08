@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server"
 import { updateContactStatus } from "@/lib/db/queries"
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
-    // Support both JSON and form submissions
     let status: string | null = null
     const contentType = request.headers.get("content-type") || ""
     if (contentType.includes("application/json")) {
@@ -16,8 +18,8 @@ export async function POST(request: Request, { params }: { params: { id: string 
     if (!status) {
       return NextResponse.json({ error: "status is required" }, { status: 400 })
     }
-
-    const id = Number(params.id)
+    const { id: idParam } = await params
+    const id = Number(idParam)
     if (!Number.isFinite(id)) {
       return NextResponse.json({ error: "invalid id" }, { status: 400 })
     }
@@ -34,5 +36,4 @@ export async function POST(request: Request, { params }: { params: { id: string 
     return NextResponse.json({ error: "Beklenmeyen bir hata oluştu" }, { status: 500 })
   }
 }
-
 

@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar"
 import { useState } from "react"
 import { tr } from "date-fns/locale"
+import { useToast } from "@/hooks/use-toast"
 
 export default function OnlineRandevuPage() {
   const [date, setDate] = useState<Date | undefined>(new Date())
@@ -21,14 +22,88 @@ export default function OnlineRandevuPage() {
     email: "",
     phone: "",
     practiceArea: "",
+    subject: "",
     preferredTime: "",
     message: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [flashState, setFlashState] = useState<"none" | "sent">("none")
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Randevu gönderme işlemi burada yapılacak
-    console.log("Randevu data:", { ...formData, date })
+    setErrorMessage(null)
+    setSuccessMessage(null)
+    if (!date) {
+      setErrorMessage("Önce zorunlu alanları doldurunuz.")
+      return
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (
+      !formData.name.trim() ||
+      !emailRegex.test(formData.email.trim()) ||
+      !formData.phone.trim() ||
+      !formData.practiceArea.trim() ||
+      !formData.subject.trim() ||
+      !formData.preferredTime.trim() ||
+      !formData.message.trim()
+    ) {
+      setErrorMessage("Önce zorunlu alanları doldurunuz.")
+      return
+    }
+    setIsSubmitting(true)
+    try {
+      const yyyy = date.getFullYear()
+      const mm = String(date.getMonth() + 1).padStart(2, "0")
+      const dd = String(date.getDate()).padStart(2, "0")
+      const preferred_date = `${yyyy}-${mm}-${dd}`
+
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          practice_area: formData.practiceArea,
+          subject: formData.subject,
+          message: formData.message,
+          preferred_date,
+          preferred_time: formData.preferredTime,
+        }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data?.error || "Randevu oluşturulamadı")
+      }
+      toast({
+        title: "Randevu talebiniz alındı",
+        description: "En kısa sürede sizinle iletişime geçeceğiz.",
+      })
+      setSuccessMessage("Randevu talebiniz başarıyla gönderildi.")
+      setFlashState("sent")
+      setTimeout(() => setFlashState("none"), 1200)
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        practiceArea: "",
+        subject: "",
+        preferredTime: "",
+        message: "",
+      })
+      setDate(new Date())
+    } catch (err: any) {
+      toast({
+        title: "Hata",
+        description: err?.message || "Bir sorun oluştu, lütfen tekrar deneyin.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -54,6 +129,16 @@ export default function OnlineRandevuPage() {
             <Card className="border-2 border-border">
               <CardContent className="p-8 lg:p-12">
                 <form onSubmit={handleSubmit} className="space-y-8">
+                  {errorMessage && (
+                    <div className="rounded-md border border-red-200 bg-red-50 text-red-700 p-4">
+                      {errorMessage}
+                    </div>
+                  )}
+                  {successMessage && (
+                    <div className="rounded-md border border-green-200 bg-green-50 text-green-700 p-4">
+                      {successMessage}
+                    </div>
+                  )}
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="name">Ad Soyad *</Label>
@@ -112,6 +197,17 @@ export default function OnlineRandevuPage() {
                     </Select>
                   </div>
 
+                  <div className="space-y-2">
+                    <Label htmlFor="subject">Konu *</Label>
+                    <Input
+                      id="subject"
+                      required
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      placeholder="Kısa konu başlığı"
+                    />
+                  </div>
+
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label>Randevu Tarihi *</Label>
@@ -150,9 +246,10 @@ export default function OnlineRandevuPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Mesajınız</Label>
+                    <Label htmlFor="message">Mesajınız *</Label>
                     <Textarea
                       id="message"
+                      required
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Danışmak istediğiniz konu hakkında kısa bilgi verebilirsiniz..."
@@ -171,8 +268,9 @@ export default function OnlineRandevuPage() {
                     type="submit"
                     size="lg"
                     className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                    disabled={isSubmitting}
                   >
-                    Randevu Talebi Gönder
+                    {isSubmitting ? "Gönderiliyor..." : flashState === "sent" ? "Randevu talebi gönderildi" : "Randevu Talebi Gönder"}
                   </Button>
                 </form>
               </CardContent>

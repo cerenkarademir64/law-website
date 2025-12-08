@@ -5,76 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Calendar, User, ArrowRight, BookOpen } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { getArticles } from "@/lib/db/queries"
 
-export default function MakalelerPage() {
-  const articles = [
-    {
-      id: 1,
-      title: "İş Hukukunda İşçi Hakları ve Tazminat Talepleri",
-      excerpt:
-        "İş hukukunda işçilerin sahip olduğu temel haklar, kıdem ve ihbar tazminatı hesaplamaları ve işten çıkarma süreçlerinde dikkat edilmesi gereken hususlar hakkında detaylı bilgiler.",
-      author: "Av. Kadir Taş",
-      date: "15 Mart 2024",
-      category: "İş Hukuku",
-      slug: "is-hukukunda-isci-haklari",
-      image: "/i--hukuku-adalet-terazisi-ofis.jpg",
-    },
-    {
-      id: 2,
-      title: "Boşanma Davalarında Mal Paylaşımı ve Nafaka Hakları",
-      excerpt:
-        "Boşanma sürecinde mal rejimi, edinilmiş mallara katılma, nafaka türleri ve hesaplama yöntemleri konularında kapsamlı bir rehber.",
-      author: "Av. Kadir Taş",
-      date: "10 Mart 2024",
-      category: "Aile Hukuku",
-      slug: "bosanma-davalarinda-mal-paylasimi",
-      image: "/aile-hukuku-bo-anma-mahkeme.jpg",
-    },
-    {
-      id: 3,
-      title: "Ceza Hukukunda Savunma Stratejileri ve Haklar",
-      excerpt:
-        "Ceza davalarında sanık hakları, savunma yöntemleri, delil toplama ve değerlendirme süreçleri hakkında bilmeniz gerekenler.",
-      author: "Av. Kadir Taş",
-      date: "5 Mart 2024",
-      category: "Ceza Hukuku",
-      slug: "ceza-hukukunda-savunma-stratejileri",
-      image: "/ceza-hukuku-mahkeme-savunma.jpg",
-    },
-    {
-      id: 4,
-      title: "Gayrimenkul Alım-Satımında Dikkat Edilmesi Gerekenler",
-      excerpt:
-        "Gayrimenkul alım-satım işlemlerinde tapu devri, vergi yükümlülükleri, ön inceleme ve sözleşme hazırlama süreçleri hakkında önemli bilgiler.",
-      author: "Av. Kadir Taş",
-      date: "28 Şubat 2024",
-      category: "Gayrimenkul Hukuku",
-      slug: "gayrimenkul-alim-satiminda-dikkat-edilmesi-gerekenler",
-      image: "/gayrimenkul-ev-tapu-s-zle-me.jpg",
-    },
-    {
-      id: 5,
-      title: "Miras Hukukunda Saklı Pay ve Tenkis Davaları",
-      excerpt:
-        "Miras hukukunda saklı pay kavramı, saklı pay oranları, tenkis davası açma koşulları ve süreçleri hakkında detaylı açıklamalar.",
-      author: "Av. Kadir Taş",
-      date: "20 Şubat 2024",
-      category: "Miras Hukuku",
-      slug: "miras-hukukunda-sakli-pay",
-      image: "/miras-hukuku-vasiyet-belge.jpg",
-    },
-    {
-      id: 6,
-      title: "Ticaret Hukukunda Şirket Kuruluşu ve Ortaklık Yapıları",
-      excerpt:
-        "Türkiye'de şirket kuruluş süreçleri, şirket türleri, ortaklık yapıları ve ticari faaliyete başlama prosedürleri hakkında kapsamlı bilgiler.",
-      author: "Av. Kadir Taş",
-      date: "15 Şubat 2024",
-      category: "Ticaret Hukuku",
-      slug: "ticaret-hukukunda-sirket-kurulusu",
-      image: "/ticaret-hukuku--irket-i--toplant-s-.jpg",
-    },
-  ]
+export default async function MakalelerPage() {
+  const articles = (await getArticles()).filter((a: any) => a.published !== false)
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -99,58 +33,71 @@ export default function MakalelerPage() {
 
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => (
-              <Card
-                key={article.id}
-                className="border-2 border-border hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col overflow-hidden"
-              >
-                <div className="relative h-56 w-full overflow-hidden bg-secondary/20">
-                  <Image
-                    src={article.image || "/placeholder.svg"}
-                    alt={article.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-
-                <CardContent className="p-8 flex flex-col flex-1">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="px-3 py-1 bg-accent/10 rounded-full border border-accent/20">
-                      <span className="text-xs font-medium text-accent">{article.category}</span>
-                    </div>
-                  </div>
-
-                  <h3 className="text-2xl font-serif font-semibold mb-4 group-hover:text-accent transition-colors">
-                    {article.title}
-                  </h3>
-
-                  <p className="text-muted-foreground leading-relaxed mb-6 flex-1">{article.excerpt}</p>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <User size={16} />
-                        <span>{article.author}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar size={16} />
-                        <span>{article.date}</span>
-                      </div>
+          {articles.length === 0 ? (
+            <div className="text-center py-20 text-muted-foreground">Henüz yayınlanmış makale bulunmuyor.</div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {articles.map((article: any) => {
+                const image = article.image_url || "/placeholder.svg"
+                const category = article.category || "Genel"
+                const author = article.author || "Taş Hukuk"
+                const dateSrc = article.published_at || article.created_at
+                const dateText = dateSrc ? new Date(dateSrc).toLocaleDateString("tr-TR") : ""
+                return (
+                  <Card
+                    key={article.id}
+                    className="border-2 border-border hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col overflow-hidden"
+                  >
+                    <div className="relative h-56 w-full overflow-hidden bg-secondary/20">
+                      <Image
+                        src={image}
+                        alt={article.title}
+                        fill
+                        className="object-contain transition-transform duration-300"
+                      />
                     </div>
 
-                    <Link
-                      href={`/makaleler/${article.slug}`}
-                      className="inline-flex items-center text-accent hover:text-accent/80 font-medium group-hover:gap-3 gap-2 transition-all"
-                    >
-                      Devamını Oku
-                      <ArrowRight size={16} />
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    <CardContent className="p-8 flex flex-col flex-1">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="px-3 py-1 bg-accent/10 rounded-full border border-accent/20">
+                          <span className="text-xs font-medium text-accent">{category}</span>
+                        </div>
+                      </div>
+
+                      <h3 className="text-2xl font-serif font-semibold mb-4 group-hover:text-accent transition-colors break-words line-clamp-2">
+                        {article.title}
+                      </h3>
+
+                      <p className="text-muted-foreground leading-relaxed mb-6 flex-1 break-words text-pretty line-clamp-3">
+                        {article.excerpt}
+                      </p>
+
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-2">
+                            <User size={16} />
+                            <span>{author}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar size={16} />
+                            <span>{dateText}</span>
+                          </div>
+                        </div>
+
+                        <Link
+                          href={`/makaleler/${article.slug}`}
+                          className="inline-flex items-center text-accent hover:text-accent/80 font-medium group-hover:gap-3 gap-2 transition-all"
+                        >
+                          Devamını Oku
+                          <ArrowRight size={16} />
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+          )}
 
           <div className="mt-16 text-center">
             <p className="text-muted-foreground mb-6">Daha fazla makale yakında eklenecektir.</p>
