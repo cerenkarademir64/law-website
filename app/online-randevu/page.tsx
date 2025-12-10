@@ -14,6 +14,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { useState } from "react"
 import { tr } from "date-fns/locale"
 import { useToast } from "@/hooks/use-toast"
+import Image from "next/image"
 
 export default function OnlineRandevuPage() {
   const [date, setDate] = useState<Date | undefined>(new Date())
@@ -36,29 +37,43 @@ export default function OnlineRandevuPage() {
     e.preventDefault()
     setErrorMessage(null)
     setSuccessMessage(null)
-    if (!date) {
-      setErrorMessage("Önce zorunlu alanları doldurunuz.")
-      return
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // Client-side: block if any field is empty (1 karakter yeterli)
+    const isEmpty = (v: string) => v.trim().length === 0
     if (
-      !formData.name.trim() ||
-      !emailRegex.test(formData.email.trim()) ||
-      !formData.phone.trim() ||
-      !formData.practiceArea.trim() ||
-      !formData.subject.trim() ||
-      !formData.preferredTime.trim() ||
-      !formData.message.trim()
+      !date ||
+      isEmpty(formData.name) ||
+      isEmpty(formData.email) ||
+      isEmpty(formData.phone) ||
+      isEmpty(formData.practiceArea) ||
+      isEmpty(formData.subject) ||
+      isEmpty(formData.preferredTime) ||
+      isEmpty(formData.message)
     ) {
-      setErrorMessage("Önce zorunlu alanları doldurunuz.")
+      setErrorMessage("Lütfen tüm alanları doldurun.")
       return
     }
     setIsSubmitting(true)
     try {
-      const yyyy = date.getFullYear()
-      const mm = String(date.getMonth() + 1).padStart(2, "0")
-      const dd = String(date.getDate()).padStart(2, "0")
-      const preferred_date = `${yyyy}-${mm}-${dd}`
+      // Minimal validation: no field should be empty
+      const isEmpty = (v?: string) => !v || v.trim().length === 0
+      if (
+        !date ||
+        isEmpty(formData.name) ||
+        isEmpty(formData.email) ||
+        isEmpty(formData.phone) ||
+        isEmpty(formData.practiceArea) ||
+        isEmpty(formData.subject) ||
+        isEmpty(formData.preferredTime) ||
+        isEmpty(formData.message)
+      ) {
+        setErrorMessage("Lütfen tüm alanları doldurunuz.")
+        setIsSubmitting(false)
+        return
+      }
+
+      const preferred_date = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+        date.getDate(),
+      ).padStart(2, "0")}`
 
       const res = await fetch("/api/appointments", {
         method: "POST",
@@ -94,7 +109,7 @@ export default function OnlineRandevuPage() {
         preferredTime: "",
         message: "",
       })
-      setDate(new Date())
+      setDate(undefined)
     } catch (err: any) {
       toast({
         title: "Hata",
@@ -110,12 +125,22 @@ export default function OnlineRandevuPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 bg-gradient-to-b from-secondary/30 to-background">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-light text-balance">Online Randevu</h1>
-            <p className="text-xl md:text-2xl text-muted-foreground text-pretty leading-relaxed">
+      {/* Hero Section with Image */}
+      <section className="relative mt-20 min-h-[60vh] pb-16 lg:pb-24 overflow-hidden">
+        <Image
+          src="/online-randevu-hero.jpg"
+          alt="Online Randevu - Hero"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
+        <div className="container mx-auto px-4 lg:px-8 relative">
+          <div className="max-w-4xl mx-auto text-center space-y-6 flex flex-col items-center justify-center h-[calc(60vh-4rem)] md:h-[calc(60vh-6rem)] lg:h-[calc(60vh-7rem)]">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-semibold text-white leading-[1.05] drop-shadow-xl">
+              Online Randevu
+            </h1>
+            <p className="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed drop-shadow">
               Hukuki danışmanlık için kolayca randevu alın
             </p>
           </div>
@@ -123,10 +148,10 @@ export default function OnlineRandevuPage() {
       </section>
 
       {/* Randevu Formu */}
-      <section className="py-20 lg:py-32">
+      <section className="relative z-10 -mt-16 md:-mt-24 lg:-mt-28 pb-20 lg:pb-32">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <Card className="border-2 border-border">
+            <Card className="border-2 border-border shadow-xl">
               <CardContent className="p-8 lg:p-12">
                 <form onSubmit={handleSubmit} className="space-y-8">
                   {errorMessage && (

@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { MapPin, Phone, Mail, Clock } from "lucide-react"
 import { Map } from "@/components/map"
 import { useState } from "react"
+import Image from "next/image"
 
 export default function IletisimPage() {
   const [formData, setFormData] = useState({
@@ -21,23 +22,68 @@ export default function IletisimPage() {
     subject: "",
     message: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Form gönderme işlemi burada yapılacak
-    console.log("Form data:", formData)
+    setSuccessMessage(null)
+    setErrorMessage(null)
+    try {
+      setIsSubmitting(true)
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data?.error || "Mesaj gönderilemedi")
+      }
+      setSuccessMessage("Mesajınız başarıyla gönderildi.")
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      })
+    } catch (err: any) {
+      setErrorMessage(err?.message || "Bir hata oluştu, lütfen tekrar deneyin.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 bg-gradient-to-b from-secondary/30 to-background">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-light text-balance">İletişim</h1>
-            <p className="text-xl md:text-2xl text-muted-foreground text-pretty leading-relaxed">
+      {/* Hero Section with Image (same height as Hakkımızda) */}
+      <section className="relative mt-20 min-h-[60vh] pb-16 lg:pb-24 overflow-hidden">
+        <Image
+          src="/iletisimhero.jpeg"
+          alt="İletişim - Hero"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
+        {/* Bottom blurred shadow effect at hero edge */}
+        <div className="pointer-events-none absolute inset-x-0 -bottom-6 h-20 bg-black/60 blur-[40px] opacity-80" />
+        <div className="container mx-auto px-4 lg:px-8 relative">
+          <div className="max-w-4xl mx-auto text-center space-y-6 flex flex-col items-center justify-center h-[calc(60vh-4rem)] md:h-[calc(60vh-6rem)] lg:h-[calc(60vh-7rem)]">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-light text-white leading-[1.05] drop-shadow-xl">
+              İletişim
+            </h1>
+            <p className="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed drop-shadow">
               Hukuki danışmanlık için bizimle iletişime geçin
             </p>
           </div>
@@ -45,18 +91,11 @@ export default function IletisimPage() {
       </section>
 
       {/* İletişim Bilgileri ve Form */}
-      <section className="py-20 lg:py-32">
+      <section className="relative z-10 -mt-46 md:-mt-44 lg:-mt-60 py-20 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* İletişim Bilgileri */}
             <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-serif font-light mb-6">İletişim Bilgileri</h2>
-                <p className="text-muted-foreground leading-relaxed text-lg">
-                  Hukuki danışmanlık ve randevu talepleriniz için aşağıdaki iletişim kanallarından bize ulaşabilirsiniz.
-                </p>
-              </div>
-
               <div className="space-y-6">
                 <Card className="border-2 border-border">
                   <CardContent className="p-6">
@@ -131,6 +170,14 @@ export default function IletisimPage() {
             <Card className="border-2 border-border">
               <CardContent className="p-8">
                 <h2 className="text-2xl font-serif font-semibold mb-6">Bize Mesaj Gönderin</h2>
+                {errorMessage ? (
+                  <div className="mb-4 rounded-md border border-red-200 bg-red-50 text-red-700 p-4">{errorMessage}</div>
+                ) : null}
+                {successMessage ? (
+                  <div className="mb-4 rounded-md border border-green-200 bg-green-50 text-green-700 p-4">
+                    {successMessage}
+                  </div>
+                ) : null}
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Ad Soyad *</Label>
@@ -190,12 +237,8 @@ export default function IletisimPage() {
                     />
                   </div>
 
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                  >
-                    Mesaj Gönder
+                  <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={isSubmitting}>
+                    {isSubmitting ? "Gönderiliyor..." : "Mesaj Gönder"}
                   </Button>
                 </form>
               </CardContent>

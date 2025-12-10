@@ -108,6 +108,7 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
               <SelectValue placeholder="Kategori seçiniz" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="Genel">Genel</SelectItem>
               <SelectItem value="Şirketler Hukuku">Şirketler Hukuku</SelectItem>
               <SelectItem value="Dava Takibi">Dava Takibi</SelectItem>
               <SelectItem value="İş Hukuku">İş Hukuku</SelectItem>

@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Briefcase, Scale, Users, Shield, FileText, Award, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { CenterOnHash } from "@/components/center-on-hash"
 
 export default function CalismaAlanlariPage() {
   const practiceAreas = [
@@ -102,10 +103,11 @@ export default function CalismaAlanlariPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <CenterOnHash />
 
-      {/* HERO — Hakkımızda ile birebir uyumlu */}
+      {/* HERO — Hakkımızda ile aynı boyut ve yapı */}
       <section
-        className="relative h-[75vh] flex items-center justify-center text-center text-white"
+        className="relative mt-20 min-h-[60vh] pb-16 lg:pb-24 overflow-hidden text-center text-white"
         style={{
           backgroundImage: "url('/calisma-alanlari-hero.jpg')",
           backgroundSize: "cover",
@@ -114,22 +116,21 @@ export default function CalismaAlanlariPage() {
       >
         <div className="absolute inset-0 bg-black/45"></div>
 
-        <div className="relative z-10 max-w-3xl mx-auto space-y-6">
-          <span className="px-4 py-2 bg-white/20 text-white font-medium text-sm rounded-full border border-white/30">
-            Uzmanlık Alanlarımız
-          </span>
+        <div className="container mx-auto px-4 lg:px-8 relative">
+          <div className="relative z-10 max-w-4xl mx-auto space-y-6 flex flex-col items-center justify-center h-[calc(60vh-4rem)] md:h-[calc(60vh-6rem)] lg:h-[calc(60vh-7rem)]">
 
-          <h1 className="text-6xl font-serif font-light drop-shadow-lg">Çalışma Alanlarımız</h1>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-semibold drop-shadow-lg">Çalışma Alanlarımız</h1>
 
-          <p className="text-xl text-white/95 drop-shadow-md">
-            Müvekkillerimizin haklarını korumak için geniş yelpazede hukuki danışmanlık hizmeti sunuyoruz.
-          </p>
+            <p className="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed drop-shadow">
+              Müvekkillerimizin haklarını korumak için geniş yelpazede hukuki danışmanlık hizmeti sunuyoruz.
+            </p>
+          </div>
         </div>
       </section>
 
 
-      {/* KARTLAR — Resme gömülü düzgün geçiş */}
-      <section className="relative -mt-32 pb-24">
+      {/* KARTLAR — Hero üstüne binme (Hakkımızda ile aynı seviye) */}
+      <section className="relative z-10 -mt-16 md:-mt-24 lg:-mt-28 pb-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="space-y-16">
             {practiceAreas.map((area, index) => (
@@ -142,7 +143,7 @@ export default function CalismaAlanlariPage() {
                   <div className="grid lg:grid-cols-3 gap-10">
                     
                     <div className="space-y-6">
-                      <div className="w-16 h-16 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                      <div id={area.slug} className="w-16 h-16 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
                         <area.icon className="text-accent" size={32} />
                       </div>
                       <h2 className="text-3xl font-serif font-semibold">{area.title}</h2>
@@ -168,24 +169,6 @@ export default function CalismaAlanlariPage() {
         </div>
       </section>
 
-
-      <section className="py-20 bg-primary text-primary-foreground text-center">
-        <h2 className="text-4xl font-serif font-light">Hukuki Danışmanlığa İhtiyacınız mı Var?</h2>
-        <p className="text-lg max-w-xl mx-auto mt-4 text-primary-foreground/90">
-          Uzman avukatlarımızla hemen iletişime geçin. Size özel çözümler üretelim.
-        </p>
-
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild size="lg" variant="secondary">
-            <Link href="/online-randevu">
-              Online Randevu Al <ArrowRight size={18} className="ml-2"/>
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="border-2">
-            <Link href="/iletisim">Bize Ulaşın</Link>
-          </Button>
-        </div>
-      </section>
 
       <Footer />
     </div>

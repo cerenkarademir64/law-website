@@ -67,9 +67,11 @@ export default async function AdminArticlesPage() {
                         Düzenle
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm">
-                      <Trash2 size={16} />
-                    </Button>
+                    <form action={`/api/admin/articles/${article.id}/delete`} method="POST">
+                      <Button type="submit" variant="outline" size="sm">
+                        <Trash2 size={16} />
+                      </Button>
+                    </form>
                   </div>
                 </div>
               </CardContent>

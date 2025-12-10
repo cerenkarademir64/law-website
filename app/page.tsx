@@ -115,7 +115,7 @@ export default function HomePage() {
           </div>
 
           <Suspense fallback={<div className="text-center text-muted-foreground">Yükleniyor...</div>}>
-            {/* @ts-expect-error Async Server Component */}
+            
             <LatestArticles />
           </Suspense>
 

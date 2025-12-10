@@ -296,3 +296,12 @@ export async function deleteContactMessage(id: number): Promise<void> {
     throw error
   }
 }
+
+export async function deleteArticle(id: number): Promise<void> {
+  const supabase = getAdminClient()
+  const { error } = await supabase.from("articles").delete().eq("id", id)
+  if (error) {
+    console.error("Supabase deleteArticle error:", error)
+    throw error
+  }
+}

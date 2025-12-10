@@ -22,34 +22,18 @@ export function Footer() {
               Av. Kadir Taş Hukuk Bürosu olarak, müvekkillerimize en kaliteli hukuki hizmeti sunmak için çalışıyoruz.
             </p>
             <div className="flex space-x-4">
-              <Link
-                href="#"
-                className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                aria-label="LinkedIn"
-              >
+              <span className="text-primary-foreground/80 cursor-default select-none" aria-hidden="true">
                 <Linkedin size={20} />
-              </Link>
-              <Link
-                href="#"
-                className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                aria-label="Twitter"
-              >
+              </span>
+              <span className="text-primary-foreground/80 cursor-default select-none" aria-hidden="true">
                 <Twitter size={20} />
-              </Link>
-              <Link
-                href="#"
-                className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                aria-label="Facebook"
-              >
+              </span>
+              <span className="text-primary-foreground/80 cursor-default select-none" aria-hidden="true">
                 <Facebook size={20} />
-              </Link>
-              <Link
-                href="#"
-                className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                aria-label="Instagram"
-              >
+              </span>
+              <span className="text-primary-foreground/80 cursor-default select-none" aria-hidden="true">
                 <Instagram size={20} />
-              </Link>
+              </span>
             </div>
           </div>
 
@@ -57,52 +41,22 @@ export function Footer() {
             <h4 className="text-sm font-semibold uppercase tracking-wider">Çalışma Alanları</h4>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/calisma-alanlari/is-hukuku"
-                  className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                >
-                  İş Hukuku
-                </Link>
+                <span className="text-sm text-primary-foreground/80 cursor-default select-none">İş Hukuku</span>
               </li>
               <li>
-                <Link
-                  href="/calisma-alanlari/ceza-hukuku"
-                  className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                >
-                  Ceza Hukuku
-                </Link>
+                <span className="text-sm text-primary-foreground/80 cursor-default select-none">Ceza Hukuku</span>
               </li>
               <li>
-                <Link
-                  href="/calisma-alanlari/aile-hukuku"
-                  className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                >
-                  Aile Hukuku
-                </Link>
+                <span className="text-sm text-primary-foreground/80 cursor-default select-none">Aile Hukuku</span>
               </li>
               <li>
-                <Link
-                  href="/calisma-alanlari/gayrimenkul-hukuku"
-                  className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                >
-                  Gayrimenkul Hukuku
-                </Link>
+                <span className="text-sm text-primary-foreground/80 cursor-default select-none">Gayrimenkul Hukuku</span>
               </li>
               <li>
-                <Link
-                  href="/calisma-alanlari/miras-hukuku"
-                  className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                >
-                  Miras Hukuku
-                </Link>
+                <span className="text-sm text-primary-foreground/80 cursor-default select-none">Miras Hukuku</span>
               </li>
               <li>
-                <Link
-                  href="/calisma-alanlari/ticaret-hukuku"
-                  className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                >
-                  Ticaret Hukuku
-                </Link>
+                <span className="text-sm text-primary-foreground/80 cursor-default select-none">Ticaret Hukuku</span>
               </li>
             </ul>
           </div>

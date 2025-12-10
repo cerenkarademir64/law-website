@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { createAppointment } from "@/lib/db/queries"
-import { validateAppointmentData } from "@/lib/validations/appointment"
+// Minimal validation: only ensure no empty fields (single char acceptable)
 
 export async function POST(request: Request) {
   try {
@@ -15,13 +15,21 @@ export async function POST(request: Request) {
       }
     }
 
-    const validation = validateAppointmentData(body)
-    if (!validation.isValid) {
+    // Minimal validation: ensure all fields are present and non-empty (single char acceptable)
+    const isNonEmptyString = (v: any) => typeof v === "string" && v.trim().length > 0
+    const missing =
+      !isNonEmptyString(body.name) ||
+      !isNonEmptyString(body.email) ||
+      !isNonEmptyString(body.phone) ||
+      !isNonEmptyString(body.practice_area) ||
+      !isNonEmptyString(body.subject) ||
+      !isNonEmptyString(body.message) ||
+      !isNonEmptyString(body.preferred_time) ||
+      !(typeof body.preferred_date === "string" && body.preferred_date.length > 0)
+
+    if (missing) {
       return NextResponse.json(
-        {
-          error: "Validation failed",
-          details: validation.errors,
-        },
+        { error: "Lütfen tüm alanları doldurunuz." },
         { status: 400 },
       )
     }
