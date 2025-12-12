@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 import { neon } from "@neondatabase/serverless"
+import { ADMIN_COOKIE_NAME, DEFAULT_SESSION_MAX_AGE, createAdminSessionToken } from "@/lib/auth"
 
-const ADMIN_COOKIE = "admin_session"
-const SESSION_MAX_AGE = 60 * 60 * 8 // 8 hours
+const SESSION_MAX_AGE = DEFAULT_SESSION_MAX_AGE // 8 hours
 
 export async function POST(request: Request) {
   try {
@@ -13,12 +13,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Kullanıcı adı ve şifre gereklidir" }, { status: 400 })
     }
 
+    const sessionSecret = process.env.ADMIN_SESSION_SECRET
+    if (!sessionSecret || sessionSecret.length < 24) {
+      console.error("ADMIN_SESSION_SECRET is missing or too short")
+      return NextResponse.json({ error: "Server misconfiguration" }, { status: 500 })
+    }
+
     // 1) ENV fallback
     const envUser = process.env.ADMIN_USERNAME
     const envPass = process.env.ADMIN_PASSWORD
     if (envUser && envPass && username === envUser && password === envPass) {
+      const token = await createAdminSessionToken(sessionSecret)
       const res = NextResponse.json({ success: true })
-      res.cookies.set(ADMIN_COOKIE, "1", {
+      res.cookies.set(ADMIN_COOKIE_NAME, token, {
         httpOnly: true,
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
@@ -51,8 +58,9 @@ export async function POST(request: Request) {
             isValid = false
           }
           if (isValid) {
+            const token = await createAdminSessionToken(sessionSecret)
             const res = NextResponse.json({ success: true })
-            res.cookies.set(ADMIN_COOKIE, "1", {
+            res.cookies.set(ADMIN_COOKIE_NAME, token, {
               httpOnly: true,
               sameSite: "lax",
               secure: process.env.NODE_ENV === "production",

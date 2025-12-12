@@ -29,10 +29,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </header>
 
       <div className="container mx-auto px-4 lg:px-8 py-8">
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
-          <aside className="w-64 flex-shrink-0">
-            <nav className="space-y-2 sticky top-24">
+          <aside className="w-full lg:w-64 flex-shrink-0">
+            <nav className="space-y-2 lg:sticky lg:top-24">
               <Link
                 href="/admin/dashboard"
                 className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-background transition-colors"

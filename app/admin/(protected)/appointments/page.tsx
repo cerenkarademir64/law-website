@@ -26,7 +26,7 @@ export default async function AdminAppointmentsPage() {
             <Card key={appointment.id}>
               <CardContent className="p-6">
                 <div className="space-y-4">
-                  <div className="flex items-start justify-between">
+                  <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                     <div className="space-y-1">
                       <h3 className="text-xl font-semibold">{appointment.name}</h3>
                       <div className="flex items-center gap-2">

@@ -110,10 +110,10 @@ export function Header() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden py-6 space-y-2 border-t border-border">
+          <div className="lg:hidden py-6 space-y-2 border-t border-border text-center">
             <Link
               href="/"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
                 isActive("/")
                   ? "text-foreground bg-secondary/60"
                   : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
@@ -124,7 +124,7 @@ export function Header() {
             </Link>
             <Link
               href="/hakkimizda"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
                 isActive("/hakkimizda")
                   ? "text-foreground bg-secondary/60"
                   : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
@@ -135,7 +135,7 @@ export function Header() {
             </Link>
             <Link
               href="/calisma-alanlari"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
                 isActive("/calisma-alanlari")
                   ? "text-foreground bg-secondary/60"
                   : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
@@ -146,7 +146,7 @@ export function Header() {
             </Link>
             <Link
               href="/makaleler"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
                 isActive("/makaleler")
                   ? "text-foreground bg-secondary/60"
                   : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
@@ -157,7 +157,7 @@ export function Header() {
             </Link>
             <Link
               href="/iletisim"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
                 isActive("/iletisim")
                   ? "text-foreground bg-secondary/60"
                   : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"

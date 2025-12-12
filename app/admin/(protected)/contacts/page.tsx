@@ -26,7 +26,7 @@ export default async function AdminContactsPage() {
             <Card key={contact.id}>
               <CardContent className="p-6">
                 <div className="space-y-4">
-                  <div className="flex items-start justify-between">
+                  <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                     <div className="space-y-1">
                       <h3 className="text-xl font-semibold">{contact.name}</h3>
                       <p className="text-sm text-muted-foreground">{contact.subject}</p>
@@ -59,7 +59,7 @@ export default async function AdminContactsPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-6 text-sm text-muted-foreground">
+                  <div className="flex flex-wrap gap-4 sm:gap-6 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <Mail size={16} />
                       <a href={`mailto:${contact.email}`} className="hover:text-accent">

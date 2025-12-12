@@ -10,7 +10,7 @@ export default async function AdminArticlesPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-3xl font-serif font-light mb-2">Makaleler</h1>
           <p className="text-muted-foreground">Blog içeriklerinizi yönetin</p>
